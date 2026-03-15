@@ -15,7 +15,17 @@ export const getCoordsByCity = async (cityName) => {
   const url = `${BASE_URL}/geo/1.0/direct?q=${encodeURIComponent(cityName)}&limit=1&appid=${apiKey}`;
   const response = await fetch(url);
   const data = await response.json();
-  return data[0]; // Returns { lat, lon, name, etc. }
+
+  if (!Array.isArray(data) || data.length === 0) {
+    return null;
+  }
+
+  const firstResult = data[0];
+  if (!Number.isFinite(firstResult?.lat) || !Number.isFinite(firstResult?.lon)) {
+    return null;
+  }
+
+  return firstResult; // Returns { lat, lon, name, etc. }
 };
 
 export const getWeatherByCoords = async (lat, lon) => {
