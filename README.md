@@ -1,64 +1,117 @@
-# Welcome to your Expo app 👋
-## mobileAppDev_NguyenDoTuanMinh_23520933_Lab01_Homeworks
+# SkyCast Weather App
 
+SkyCast is an Expo + React Native weather search app that lets users search for a city and get current weather information from OpenWeather.
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+The app uses a two-step API flow:
 
-## Get started
+1. Geocoding API to resolve city name to latitude/longitude.
+2. Current Weather API to fetch temperature and description by coordinates.
+
+## Features
+
+- City search with keyboard submit support.
+- Invalid city detection with toast feedback.
+- Loading state while requesting API data.
+- Weather card showing:
+  - City name
+  - Temperature in Celsius
+  - Weather description
+- Blue and yellow weather-themed UI (sky + sun visual direction).
+
+## Tech Stack
+
+- Expo SDK 54
+- React Native 0.81
+- Expo Router
+- react-native-root-toast
+- OpenWeather API
+
+## Environment Variables
+
+Create a local `.env` file from `.env.example` and set your key:
+
+```bash
+cp .env.example .env
+```
+
+```env
+EXPO_PUBLIC_OPENWEATHER_API_KEY=your_real_openweather_api_key
+```
+
+Notes:
+
+- `EXPO_PUBLIC_*` variables are available in app code at build/runtime.
+- Do not commit real keys.
+- `.env.example` should contain placeholder values only.
+
+## Getting Started
 
 1. Install dependencies
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-3. Configure weather API key
-
-   ```bash
-   cp .env.example .env
-   ```
-
-   Then set your key in `.env`:
-
-   ```env
-   EXPO_PUBLIC_OPENWEATHER_API_KEY=your_real_openweather_api_key
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Configure environment variables (see section above)
 
-## Learn more
+3. Start development server
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npx expo start
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+4. Optional platform shortcuts
 
-## Join the community
+```bash
+npm run android
+npm run ios
+npm run web
+```
 
-Join our community of developers creating universal apps.
+## Project Structure
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- `app/(tabs)/index.tsx`
+  - Main weather UI and search logic
+  - Loading state and error/toast handling
+- `services/weatherService.js`
+  - OpenWeather API calls
+  - Geocoding result validation
+  - Environment variable API key resolution
+- `assets/images/`
+  - App icon and weather-related artwork
+
+## Weather Request Flow
+
+1. User enters a city name.
+2. App calls `/geo/1.0/direct?q={city}&limit=1&appid={key}`.
+3. If no valid coordinates are returned, app shows an invalid-city message.
+4. If coordinates are valid, app calls `/data/2.5/weather?lat={lat}&lon={lon}&appid={key}&units=metric`.
+5. UI displays weather result card.
+
+## Error Handling Behavior
+
+- Empty input: prompts user to enter a city name.
+- Invalid city: shows toast and no weather result is displayed.
+- Network/API error: shows alert with retry guidance.
+
+## Scripts
+
+- `npm run start` - Start Expo development server
+- `npm run android` - Launch Android target
+- `npm run ios` - Launch iOS target
+- `npm run web` - Launch web target
+- `npm run lint` - Run lint checks
+
+## Screenshots
+
+Add screenshots here for easier review:
+
+- Valid city result state
+- Invalid city toast state
+
+## Future Improvements
+
+- Add 5-day forecast support.
+- Add location disambiguation (city/state/country selector).
+- Add search history and favorites.
+- Move weather calls to backend proxy for stronger key protection.
