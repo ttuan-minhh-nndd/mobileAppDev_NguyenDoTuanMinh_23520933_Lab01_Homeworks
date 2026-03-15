@@ -1,6 +1,6 @@
-# SkyCast Weather App
+# OPENAZURE 🫧🌤️☁ Your City Weather App
 
-SkyCast is an Expo + React Native weather search app that lets users search for a city and get current weather information from OpenWeather.
+ OPENAZURE is an Expo + React Native weather search app that lets users search for a city and get current weather information from OpenWeather.
 
 The app uses a two-step API flow:
 
